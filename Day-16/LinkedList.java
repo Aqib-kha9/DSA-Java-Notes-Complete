@@ -219,15 +219,67 @@ public class LinkedList {
         return true;
     }
 
+    // Detecting cycle/loop in a linked list
+    public boolean isCycle(){
+        Node slow = head;
+        Node fast = head;
+        while(fast!=null && fast.next!=null){
+            slow = slow.next; //+1
+            fast = fast.next.next; //+2
+            if(slow==fast){
+                return true; // cycle exits
+            }
+        }
+        return false; // cycle dosn't exits
+    }
+
+    // remove cycle in a linked list
+    public void removeCycle(){
+        // step1 detect cycle
+        Node slow = head;
+        Node fast = head;
+        boolean cycle = false;
+        while(fast!=null && fast.next != null){
+            slow = slow.next;//+1
+            fast = fast.next.next;//+2
+            if(slow == fast){
+                cycle = true;
+                break;
+            }
+        }
+        if(cycle==false){
+            return;
+        }
+        // step2 find last node
+
+        slow = head;
+        Node prev = null;
+        while(slow!=fast){
+            prev = fast;
+            slow = slow.next;//+1
+            fast = fast.next;//+1
+        }
+        // step3 point last node to null
+        prev.next = null;
+    }
+
 
     public static void main(String args[]){
         LinkedList ll = new LinkedList();
-        ll.addFirst(2);
-        ll.addFirst(1);
-        ll.addLast(2);
-        ll.addLast(1);
-        ll.print();
-        System.out.println(ll.checkPalindrome());
+        // ll.addFirst(2);
+        // ll.addFirst(1);
+        // ll.addLast(2);
+        // ll.addLast(1);
+        // ll.print();
+        head = new Node(1);
+        Node temp = new Node(2);
+        head.next = temp;
+        head.next.next = new Node(3);
+        head.next.next.next = temp;
+        // ll.print();
+        System.out.println(ll.isCycle());
+        ll.removeCycle();
+        System.out.println(ll.isCycle());
         
     }
 }
