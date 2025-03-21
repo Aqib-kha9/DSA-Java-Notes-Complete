@@ -112,9 +112,71 @@ public class StackB {
         return result.toString();
     }
 
+    // reverse a stack using recurrsion 
+    public static void revStack(Stack<Integer>s){
+        if(s.empty()){
+            return;
+        }
+        int top = s.pop();
+        revStack(s);
+        pushAtBottom(s, top);
+    }
+
+    // print stack
+    public static void print(Stack<Integer>s){
+        while(!s.empty()){
+            System.out.println(s.peek());
+            s.pop();
+        }
+    }
+
+    // stock span problem
+    public static void stockSpan(int stocks[], int span[]){
+        Stack<Integer> s = new Stack<>();
+        span[0] = 1;
+        s.push(0);
+        for(int i=1; i<stocks.length; i++){
+            int currPrice = stocks[i];
+            while(!s.isEmpty() && currPrice > stocks[s.peek()]){
+                s.pop();
+            }
+            if(s.isEmpty()){
+                span[i] = i+1;
+            }else{
+                int prevHigh = s.peek();
+                span[i] = i-prevHigh;
+            }
+            s.push(i);
+        }
+    }
+
+    // next greater element
+    public static void nextGreater(int arr[],int nxtGreater[]){
+        Stack<Integer> s = new Stack<>();
+        
+        for(int i=arr.length-1; i>=0; i--){
+
+            //1 while
+            while(!s.empty() && arr[s.peek()] <= arr[i]){
+                s.pop();
+            }
+
+            //2 if-else
+            if(s.isEmpty()){
+                nxtGreater[i] = -1;
+            }else{
+                nxtGreater[i] = arr[s.peek()];
+            }
+
+            //3 push in s
+            s.push(i);
+        }
+    }
+
+
     public static void main(String args[]){
-        // Stack<Integer> s = new Stack<>();
-        // // Stack s = new Stack();
+        Stack<Integer> s = new Stack<>();
+        // Stack s = new Stack();
         // s.push(1);
         // s.push(2);
         // s.push(3);
@@ -124,8 +186,24 @@ public class StackB {
         //     s.pop();
         // }
 
-        String str = "abc";
-        String result = revString(str);
-        System.out.println(result);
+        // String str = "abc";
+        // String result = revString(str);
+        // System.out.println(result);
+        // revStack(s);
+        // print(s);
+
+        // int stocks[] = {100,80,60,70,60,85,100};
+        // int span[] = new int[stocks.length];
+        // stockSpan(stocks,span);
+        // for(int i=0; i<span.length; i++){
+        //     System.out.println(span[i]);
+        // }
+
+        int arr[] = {6,8,0,1,3};
+        int nxtGreater[] = new int[arr.length];
+        nextGreater(arr,nxtGreater);
+        for(int i=0; i<nxtGreater.length; i++){
+            System.out.print("["+ nxtGreater[i]+"] ");
+        }
     }   
 }
