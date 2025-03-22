@@ -173,6 +173,102 @@ public class StackB {
         }
     }
 
+    // valid paranthesis
+    public static boolean validParan(String str){
+        Stack<Character> s = new Stack<>();
+        for(int i=0; i<str.length(); i++){
+            char ch = str.charAt(i);
+            if(ch=='(' || ch=='[' || ch=='{'){
+                s.push(ch);
+            }else{
+                if(s.isEmpty()){
+                    return false;
+                }
+                if((s.peek()=='(' && ch==')')
+                    ||(s.peek()=='[' && ch==']')
+                    ||(s.peek()=='{' && ch=='}')){
+                    s.pop();
+                }else{
+                    return false;
+                }
+            }
+        }
+        return s.isEmpty();
+    }
+
+    // duplicate paranthesis
+    public static boolean dupPara(String str){
+        Stack<Character> s = new Stack<>();
+        for(int i=0; i<str.length(); i++){
+            char ch = str.charAt(i);
+            if(ch==')'){
+                int count = 0;
+                while(s.peek()!='('){
+                    s.pop();
+                    count++;
+                }
+                if(count<1){
+                    return true;
+                }else{
+                    s.pop(); 
+                }
+            }else{
+                s.push(ch);
+            }
+        }
+        return false;
+    }
+
+    // Max Rectunglar area in a histogram 
+    public static void maxRecArea(int arr[]){
+        int maxArea = 0;
+        int nsr[] = new int[arr.length];
+        int nsl[] = new int[arr.length];
+        
+        //next smaller right
+        Stack<Integer> s = new Stack<>();
+        for(int i=arr.length-1; i>=0; i--){
+            //1 while
+            while(!s.empty() && arr[s.peek()] >= arr[i]){
+                s.pop();
+            }
+            //2 if-else
+            if(s.isEmpty()){
+                nsr[i] = arr.length;
+            }else{
+                nsr[i] = s.peek();
+            }
+            //3 push in s
+            s.push(i);
+        }
+
+        //next smaller left
+        s = new Stack<>();
+        for(int i=0; i<arr.length; i++){
+            //1 while
+            while(!s.empty() && arr[s.peek()] >= arr[i]){
+                s.pop();
+            }
+            //2 if-else
+            if(s.isEmpty()){
+                nsl[i] = -1;
+            }else{
+                nsl[i] = s.peek();
+            }
+            //3 push in s
+            s.push(i);
+        }
+
+        //calculate area
+        for(int i=0; i<arr.length; i++){
+            int height = arr[i];
+            int widht = nsr[i]-nsl[i]-1;
+            int currArea = height*widht;
+            maxArea = Math.max(currArea,maxArea);
+        }
+        System.out.println("Max Area is "+ maxArea);
+    }
+
 
     public static void main(String args[]){
         Stack<Integer> s = new Stack<>();
@@ -199,11 +295,19 @@ public class StackB {
         //     System.out.println(span[i]);
         // }
 
-        int arr[] = {6,8,0,1,3};
-        int nxtGreater[] = new int[arr.length];
-        nextGreater(arr,nxtGreater);
-        for(int i=0; i<nxtGreater.length; i++){
-            System.out.print("["+ nxtGreater[i]+"] ");
-        }
+        // int arr[] = {6,8,0,1,3};
+        // int nxtGreater[] = new int[arr.length];
+        // nextGreater(arr,nxtGreater);
+        // for(int i=0; i<nxtGreater.length; i++){
+        //     System.out.print("["+ nxtGreater[i]+"] ");
+        // }
+        // String str = "([{}}])";
+        // System.out.println(validParan(str));
+
+        // String str = "((a+b))";
+        // System.out.println(dupPara(str));
+
+        int arr[] = {2,5,6,3,6,3};
+        maxRecArea(arr);
     }   
 }
