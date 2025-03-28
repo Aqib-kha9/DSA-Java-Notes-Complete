@@ -164,6 +164,26 @@ public class Queues {
         }
     } 
 
+    // first non repeating letters in a stream of characters
+    public static void firstNonRepeating(String str){
+        int freq[] = new int[26];
+        Queue<Character> q = new LinkedList<>();
+        for(int i=0; i<str.length(); i++){
+            char ch = str.charAt(i);
+            q.add(ch);
+            freq[ch-'a']++;
+            while(!q.isEmpty() && freq[q.peek()-'a']>1){
+                q.remove();
+            }
+            if(q.isEmpty()){
+                System.out.print(-1+" ");
+            }else{
+                System.out.print(q.peek()+" ");
+            }
+        }
+
+    }
+
     public static void main(String args[]){
         // Queue<Integer> q = new LinkedList<>();
         // Queue<Integer> q = new ArrayDeque<>();
@@ -176,13 +196,15 @@ public class Queues {
         //     q.remove();
         // }
 
-        Stack s = new Stack();
-        s.push(1);
-        s.push(2);
-        s.push(3);
-        while(!s.isEmpty()){
-            System.out.println(s.peek());
-            s.pop();
-        }
+        // Stack s = new Stack();
+        // s.push(1);
+        // s.push(2);
+        // s.push(3);
+        // while(!s.isEmpty()){
+        //     System.out.println(s.peek());
+        //     s.pop();
+        // }
+        String str = "aabccxb";
+        firstNonRepeating(str);
     }
 }
